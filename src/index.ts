@@ -12,6 +12,10 @@ const deleteAllButton = document.querySelector("#delete-all-btn")!;
 let tasks: Task[] = loadTasks();
 renderTasks();
 
+list.addEventListener("dragover", (e) => {
+  e.preventDefault();
+});
+
 form.addEventListener("submit", (e) => {
   e.preventDefault();
   const taskName = input.value;
