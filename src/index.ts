@@ -116,6 +116,7 @@ function renderTask(task: Task) {
   label.htmlFor = task.id;
   label.append(task.name);
   list.appendChild(taskElement);
+  listItem.scrollIntoView();
 }
 
 function renderTasks() {
