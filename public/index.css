@@ -17,7 +17,7 @@ main {
   background-color: white;
   max-width: 768px;
   margin: 2rem;
-  padding: 2rem;
+  padding: 1rem 2rem;
   border-radius: 0.3rem;
 }
 
@@ -132,6 +132,5 @@ h1 {
 @media (max-width: 768px) {
 main {
   margin: 1rem;
-  padding: 1rem;
 }
 }
