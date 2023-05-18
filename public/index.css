@@ -109,6 +109,21 @@ h1 {
   cursor: move;
 }
 
+.task div {
+  align-self: center;
+}
+
+.right-side {
+  display: flex;
+  gap: 1rem;
+}
+
+.right-side img {
+  height: 25px;
+  width: 25px;
+  align-self: center;
+}
+
 .task.dragging {
   opacity: 0.5;
 }

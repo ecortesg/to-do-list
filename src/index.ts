@@ -100,7 +100,7 @@ function renderTasks() {
       saveTasks();
       renderTasks();
     });
-    ["dragstart", "touchstart"].forEach((evt) => {
+    ["dragstart", "touchmove"].forEach((evt) => {
       listItem.addEventListener(evt, () => {
         listItem.classList.add("dragging");
       });
