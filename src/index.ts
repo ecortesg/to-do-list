@@ -19,7 +19,7 @@ form.addEventListener("submit", (e) => {
   const newTask = createTask(taskName);
   tasks.push(newTask);
   saveTasks();
-  renderTasks();
+  renderTask(newTask);
   input.value = "";
 });
 
@@ -80,40 +80,42 @@ function loadTasks(): Task[] {
   return JSON.parse(taskJSON);
 }
 
+function renderTask(task: Task) {
+  const taskElement = document.importNode(template.content, true);
+  const listItem = taskElement.querySelector("li")!;
+  const checkbox = taskElement.querySelector("input")!;
+  const deleteButton = taskElement.querySelector("button")!;
+  const label = taskElement.querySelector("label")!;
+
+  checkbox.id = task.id;
+  checkbox.checked = task.complete;
+  checkbox.addEventListener("change", () => {
+    task.complete = checkbox.checked;
+    saveTasks();
+  });
+  deleteButton.addEventListener("click", () => {
+    list.removeChild(listItem);
+    deleteTask(task.id);
+    saveTasks();
+  });
+  ["dragstart", "touchmove"].forEach((evt) => {
+    listItem.addEventListener(evt, () => {
+      listItem.classList.add("dragging");
+    });
+  });
+  ["dragend", "touchend"].forEach((evt) => {
+    listItem.addEventListener(evt, () => {
+      listItem.classList.remove("dragging");
+    });
+  });
+  label.htmlFor = task.id;
+  label.append(task.name);
+  list.appendChild(taskElement);
+}
+
 function renderTasks() {
   clearElement(list);
-  tasks.forEach((task) => {
-    const taskElement = document.importNode(template.content, true);
-    const listItem = taskElement.querySelector("li")!;
-    const checkbox = taskElement.querySelector("input")!;
-    const deleteButton = taskElement.querySelector("button")!;
-    const label = taskElement.querySelector("label")!;
-
-    checkbox.id = task.id;
-    checkbox.checked = task.complete;
-    checkbox.addEventListener("change", () => {
-      task.complete = checkbox.checked;
-      saveTasks();
-    });
-    deleteButton.addEventListener("click", () => {
-      list.removeChild(listItem);
-      deleteTask(task.id);
-      saveTasks();
-    });
-    ["dragstart", "touchmove"].forEach((evt) => {
-      listItem.addEventListener(evt, () => {
-        listItem.classList.add("dragging");
-      });
-    });
-    ["dragend", "touchend"].forEach((evt) => {
-      listItem.addEventListener(evt, () => {
-        listItem.classList.remove("dragging");
-      });
-    });
-    label.htmlFor = task.id;
-    label.append(task.name);
-    list.appendChild(taskElement);
-  });
+  tasks.forEach(renderTask);
 }
 
 function createTask(name: string): Task {
