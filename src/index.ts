@@ -35,34 +35,39 @@ deleteAllButton.addEventListener("click", () => {
   renderTasks();
 });
 
-list?.addEventListener("dragover", (e) => {
-  e.preventDefault();
-  const afterElement = getDragAfterElement(list, e.clientY);
-  const dragElement = document.querySelector<HTMLLIElement>(".dragging")!;
-  const dragElementId = dragElement.querySelector("input")?.getAttribute("id");
-
-  const taskIndex = tasks.findIndex((task) => task.id == dragElementId);
-
-  if (afterElement == null) {
-    list.appendChild(dragElement);
-    //Remove task and append it to the end
-    tasks.push(tasks.splice(taskIndex, 1)[0]);
-  } else {
-    list.insertBefore(dragElement, afterElement);
-    const afterElementId = afterElement
+["dragover", "touchmove"].forEach((evt) => {
+  list?.addEventListener(evt, (e: any) => {
+    e.preventDefault();
+    const y = e.type == "dragover" ? e.clientY : e.changedTouches[0].pageY;
+    const afterElement = getDragAfterElement(list, y);
+    const dragElement = document.querySelector<HTMLLIElement>(".dragging")!;
+    const dragElementId = dragElement
       .querySelector("input")
       ?.getAttribute("id");
-    const newIndex = tasks.findIndex((task) => task.id == afterElementId) - 1;
-    //Remove task
-    const taskToRelocate = tasks.splice(taskIndex, 1)[0];
-    //Add task to new location
-    if (newIndex >= 0) {
-      tasks.splice(newIndex, 0, taskToRelocate);
+
+    const taskIndex = tasks.findIndex((task) => task.id == dragElementId);
+
+    if (afterElement == null) {
+      list.appendChild(dragElement);
+      //Remove task and append it to the end
+      tasks.push(tasks.splice(taskIndex, 1)[0]);
     } else {
-      tasks.unshift(taskToRelocate);
+      list.insertBefore(dragElement, afterElement);
+      const afterElementId = afterElement
+        .querySelector("input")
+        ?.getAttribute("id");
+      const newIndex = tasks.findIndex((task) => task.id == afterElementId) - 1;
+      //Remove task
+      const taskToRelocate = tasks.splice(taskIndex, 1)[0];
+      //Add task to new location
+      if (newIndex >= 0) {
+        tasks.splice(newIndex, 0, taskToRelocate);
+      } else {
+        tasks.unshift(taskToRelocate);
+      }
     }
-  }
-  saveTasks();
+    saveTasks();
+  });
 });
 
 function saveTasks() {
@@ -95,12 +100,15 @@ function renderTasks() {
       saveTasks();
       renderTasks();
     });
-    listItem.addEventListener("dragstart", () => {
-      listItem.classList.add("dragging");
+    ["dragstart", "touchstart"].forEach((evt) => {
+      listItem.addEventListener(evt, () => {
+        listItem.classList.add("dragging");
+      });
     });
-
-    listItem.addEventListener("dragend", () => {
-      listItem.classList.remove("dragging");
+    ["dragend", "touchend"].forEach((evt) => {
+      listItem.addEventListener(evt, () => {
+        listItem.classList.remove("dragging");
+      });
     });
     label.htmlFor = task.id;
     label.append(task.name);
