@@ -78,7 +78,6 @@ function renderTask(task: Task) {
       listItem.classList.remove("dragging");
     });
   });
-
   ["dragover", "touchmove"].forEach((evt) => {
     dragIcon.addEventListener(evt, (e: any) => {
       e.preventDefault();
@@ -114,7 +113,6 @@ function renderTask(task: Task) {
       saveTasks();
     });
   });
-
   label.htmlFor = task.id;
   label.append(task.name);
   list.appendChild(taskElement);
