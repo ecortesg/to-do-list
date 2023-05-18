@@ -17,7 +17,7 @@ main {
   background-color: white;
   max-width: 768px;
   margin: 2rem;
-  padding: 1rem;
+  padding: 2rem;
   border-radius: 0.3rem;
 }
 
@@ -127,4 +127,11 @@ h1 {
 
 .task.dragging {
   opacity: 0.5;
+}
+
+@media (max-width: 768px) {
+main {
+  margin: 1rem;
+  padding: 1rem;
+}
 }
