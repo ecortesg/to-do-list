@@ -17,7 +17,7 @@ main {
   background-color: white;
   max-width: 768px;
   margin: 2rem;
-  padding: 1rem 2rem;
+  padding: 2rem;
   border-radius: 0.3rem;
 }
 
@@ -106,7 +106,6 @@ h1 {
   border-bottom: 1px solid #ddd;
   padding: 0.5rem;
   transition: 100ms;
-  cursor: move;
   background-color: white;
 }
 
@@ -123,6 +122,7 @@ h1 {
   height: 25px;
   width: 25px;
   align-self: center;
+  cursor: move;
 }
 
 .task.dragging {
@@ -130,7 +130,8 @@ h1 {
 }
 
 @media (max-width: 768px) {
-main {
-  margin: 1rem;
-}
+  main {
+    margin: 1rem;
+    padding: 1rem;
+  }
 }

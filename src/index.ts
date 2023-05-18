@@ -40,7 +40,8 @@ deleteAllButton.addEventListener("click", () => {
     e.preventDefault();
     const y = e.type == "dragover" ? e.clientY : e.changedTouches[0].pageY;
     const afterElement = getDragAfterElement(list, y, e.type);
-    const dragElement = document.querySelector<HTMLLIElement>(".dragging")!;
+    const dragElement = document.querySelector<HTMLLIElement>(".dragging");
+    if (dragElement == null) return;
     const dragElementId = dragElement
       .querySelector("input")
       ?.getAttribute("id");
@@ -86,6 +87,7 @@ function renderTask(task: Task) {
   const checkbox = taskElement.querySelector("input")!;
   const deleteButton = taskElement.querySelector("button")!;
   const label = taskElement.querySelector("label")!;
+  const dragIcon = taskElement.querySelector("img")!;
 
   checkbox.id = task.id;
   checkbox.checked = task.complete;
@@ -99,12 +101,12 @@ function renderTask(task: Task) {
     saveTasks();
   });
   ["dragstart", "touchmove"].forEach((evt) => {
-    listItem.addEventListener(evt, () => {
+    dragIcon.addEventListener(evt, () => {
       listItem.classList.add("dragging");
     });
   });
   ["dragend", "touchend"].forEach((evt) => {
-    listItem.addEventListener(evt, () => {
+    dragIcon.addEventListener(evt, () => {
       listItem.classList.remove("dragging");
     });
   });
