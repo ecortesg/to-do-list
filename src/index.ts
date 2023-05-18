@@ -39,7 +39,7 @@ deleteAllButton.addEventListener("click", () => {
   list?.addEventListener(evt, (e: any) => {
     e.preventDefault();
     const y = e.type == "dragover" ? e.clientY : e.changedTouches[0].pageY;
-    const afterElement = getDragAfterElement(list, y);
+    const afterElement = getDragAfterElement(list, y, e.type);
     const dragElement = document.querySelector<HTMLLIElement>(".dragging")!;
     const dragElementId = dragElement
       .querySelector("input")
@@ -142,7 +142,8 @@ function clearElement(element: HTMLElement) {
 
 function getDragAfterElement(
   container: HTMLUListElement,
-  y: number
+  y: number,
+  eventType: string
 ): HTMLLIElement | null {
   const draggableElements = [
     ...container.querySelectorAll(".task:not(.dragging)"),
@@ -151,7 +152,13 @@ function getDragAfterElement(
   return draggableElements.reduce(
     (closest, child): ClosestTask => {
       const box = child.getBoundingClientRect();
-      const offset = y - box.top - box.height / 2;
+      let offset;
+      if (eventType == "dragover") {
+        offset = y - box.top - box.height / 2;
+      } else {
+        offset =
+          y - box.top - box.height / 2 - document.documentElement.scrollTop;
+      }
       if (offset < 0 && offset > closest.offset) {
         return { offset: offset, element: child } as ClosestTask;
       } else {
