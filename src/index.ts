@@ -96,9 +96,9 @@ function renderTasks() {
       saveTasks();
     });
     deleteButton.addEventListener("click", () => {
+      list.removeChild(listItem);
       deleteTask(task.id);
       saveTasks();
-      renderTasks();
     });
     ["dragstart", "touchmove"].forEach((evt) => {
       listItem.addEventListener(evt, () => {

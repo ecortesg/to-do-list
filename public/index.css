@@ -107,6 +107,7 @@ h1 {
   padding: 0.5rem;
   transition: 100ms;
   cursor: move;
+  background-color: white;
 }
 
 .task div {
