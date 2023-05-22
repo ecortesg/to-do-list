@@ -7,7 +7,8 @@ const input = document.querySelector<HTMLInputElement>("#new-task-title")!;
 const template = document.querySelector<HTMLTemplateElement>("#task-template")!;
 const uncheckAllButton =
   document.querySelector<HTMLButtonElement>("#uncheck-all-btn")!;
-const deleteAllButton = document.querySelector("#delete-all-btn")!;
+const deleteAllButton =
+  document.querySelector<HTMLButtonElement>("#delete-all-btn")!;
 
 let tasks: Task[] = loadTasks();
 renderTasks();
@@ -51,16 +52,16 @@ function loadTasks(): Task[] {
 
 function renderTask(task: Task) {
   const taskElement = document.importNode(template.content, true);
-  const listItem = taskElement.querySelector("li")!;
+  const listItem = taskElement.querySelector<HTMLLIElement>("li")!;
   const checkbox = taskElement.querySelector<HTMLInputElement>(
     'input[type="checkbox"]'
   )!;
-  const editInput =
-    taskElement.querySelector<HTMLInputElement>('input[type="text"]')!;
-  const editButton = taskElement.querySelector(".btn-primary")!;
-  const deleteButton = taskElement.querySelector(".btn-delete")!;
-  // const label = taskElement.querySelector("label")!;
-  const dragIcon = taskElement.querySelector("img")!;
+  const editInput = taskElement.querySelector<HTMLDivElement>(".edit-input")!;
+  const editButton =
+    taskElement.querySelector<HTMLButtonElement>(".btn-primary")!;
+  const deleteButton =
+    taskElement.querySelector<HTMLButtonElement>(".btn-delete")!;
+  const dragIcon = taskElement.querySelector<HTMLImageElement>("img")!;
 
   checkbox.id = task.id;
   checkbox.checked = task.complete;
@@ -69,24 +70,21 @@ function renderTask(task: Task) {
     saveTasks();
   });
   editButton.addEventListener("click", () => {
-    editInput.removeAttribute("readonly");
+    editInput.setAttribute("contenteditable", "true");
     editInput.focus();
   });
-
   editInput.addEventListener("blur", (e) => {
-    editInput.setAttribute("readonly", "true");
-    const target = e.target as HTMLInputElement;
-    task.name = target.value;
+    editInput.setAttribute("contenteditable", "false");
+    const target = e.target as HTMLDivElement;
+    task.name = target.textContent || "";
     saveTasks();
   });
-
   editInput.addEventListener("keypress", function (e) {
     if (e.key === "Enter") {
-      const target = e.target as HTMLInputElement;
+      const target = e.target as HTMLDivElement;
       target.blur();
     }
   });
-
   deleteButton.addEventListener("click", () => {
     list.removeChild(listItem);
     deleteTask(task.id);
@@ -113,7 +111,6 @@ function renderTask(task: Task) {
         ?.getAttribute("id");
 
       const taskIndex = tasks.findIndex((task) => task.id == dragElementId);
-
       if (afterElement == null) {
         list.appendChild(dragElement);
         //Remove task and append it to the end
@@ -137,9 +134,7 @@ function renderTask(task: Task) {
       saveTasks();
     });
   });
-  // label.htmlFor = task.id;
-  // label.append(task.name);
-  editInput.value = task.name;
+  editInput.textContent = task.name;
   list.appendChild(taskElement);
   listItem.scrollIntoView(false);
 }
