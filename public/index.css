@@ -40,6 +40,7 @@ h1 {
 }
 
 .btn.btn-primary {
+  align-self: center;
   background-color: hsl(200, 100%, 50%);
 }
 
@@ -60,7 +61,6 @@ h1 {
 
 .btn.btn-small {
   padding: 0.25em 0.75em;
-  font-weight: bold;
 }
 
 .btn-container {
@@ -117,12 +117,40 @@ h1 {
   align-self: center;
 }
 
-.right-side {
+.task-content {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.task input[type="text"] {
+  outline: none;
+  border: none;
+  background: none;
+  cursor: initial;
+  padding: 0.25rem;
+  font-size: inherit;
+  width: 95%;
+}
+
+.task input[type="text"]:not(:read-only):focus {
+  outline: 1px solid #bbb;
+  border-radius: 0.2rem;
+}
+
+.task input[type="checkbox"] {
+  height: 15px;
+  width: 15px;
+  margin: 0;
+}
+
+.task-actions {
   display: flex;
   gap: 1rem;
 }
 
-.right-side img {
+.task-actions img {
   height: 30px;
   width: 30px;
   align-self: center;
@@ -137,9 +165,18 @@ h1 {
 @media (max-width: 768px) {
   body {
     padding: 1rem;
+    font-size: 0.8rem;
+  }
+
+  .btn {
+    font-size: 0.8rem;
   }
 
   main {
     padding: 1rem;
+  }
+
+  .task-actions {
+    gap: 0.5rem;
   }
 }

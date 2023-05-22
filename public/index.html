@@ -31,13 +31,14 @@
     </main>
     <template id="task-template">
       <li class="task">
-        <div class="left-side">
+        <div class="task-content">
           <input type="checkbox" />
-          <label></label>
+          <input type="text" readonly />
         </div>
-        <div class="right-side">
-          <img src="drag-handle.svg" alt="Draggable Icon">
-          <button class="btn btn-delete btn-small">X</button>
+        <div class="task-actions">
+          <button class="btn btn-primary btn-small">Edit</button>
+          <button class="btn btn-delete btn-small">Delete</button>
+          <img src="drag-handle.svg" alt="Draggable Icon" />
         </div>
       </li>
     </template>

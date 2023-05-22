@@ -52,9 +52,14 @@ function loadTasks(): Task[] {
 function renderTask(task: Task) {
   const taskElement = document.importNode(template.content, true);
   const listItem = taskElement.querySelector("li")!;
-  const checkbox = taskElement.querySelector("input")!;
-  const deleteButton = taskElement.querySelector("button")!;
-  const label = taskElement.querySelector("label")!;
+  const checkbox = taskElement.querySelector<HTMLInputElement>(
+    'input[type="checkbox"]'
+  )!;
+  const editInput =
+    taskElement.querySelector<HTMLInputElement>('input[type="text"]')!;
+  const editButton = taskElement.querySelector(".btn-primary")!;
+  const deleteButton = taskElement.querySelector(".btn-delete")!;
+  // const label = taskElement.querySelector("label")!;
   const dragIcon = taskElement.querySelector("img")!;
 
   checkbox.id = task.id;
@@ -63,6 +68,25 @@ function renderTask(task: Task) {
     task.complete = checkbox.checked;
     saveTasks();
   });
+  editButton.addEventListener("click", () => {
+    editInput.removeAttribute("readonly");
+    editInput.focus();
+  });
+
+  editInput.addEventListener("blur", (e) => {
+    editInput.setAttribute("readonly", "true");
+    const target = e.target as HTMLInputElement;
+    task.name = target.value;
+    saveTasks();
+  });
+
+  editInput.addEventListener("keypress", function (e) {
+    if (e.key === "Enter") {
+      const target = e.target as HTMLInputElement;
+      target.blur();
+    }
+  });
+
   deleteButton.addEventListener("click", () => {
     list.removeChild(listItem);
     deleteTask(task.id);
@@ -113,8 +137,9 @@ function renderTask(task: Task) {
       saveTasks();
     });
   });
-  label.htmlFor = task.id;
-  label.append(task.name);
+  // label.htmlFor = task.id;
+  // label.append(task.name);
+  editInput.value = task.name;
   list.appendChild(taskElement);
   listItem.scrollIntoView(false);
 }
